@@ -8,14 +8,13 @@ services:
     ports:
       - "8085:8081"  
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db_order:3306/order_db
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS=db_kafka:9092
+      - SPRING_CONFIG_LOCATION=/config/application.properties
     depends_on:
       - db_order
     networks:
       - my-network
+    volumes:
+      - ./OrderDemo1/config/application.properties:/config/application.properties  
 
   product-service:
     image: product-service
@@ -24,15 +23,13 @@ services:
     ports:
       - "8086:8082"  
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db_product:3306/product_db
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS=db_kafka:9092
-      - SPRING_KAFKA_CONSUMER_GROUP_ID=group-1
+      - SPRING_CONFIG_LOCATION=/config/application.properties
     depends_on:
       - db_product
     networks:
       - my-network
+    volumes:
+      - ./ProductDemo1/config/application.properties:/config/application.properties
 
   db_order:
     image: mysql:8
@@ -83,3 +80,5 @@ networks:
 volumes:
   db_order_data:
   db_product_data:
+
+
